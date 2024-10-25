@@ -1,14 +1,16 @@
 // App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import Login from './components/Login';
-import Signup from './components/Signup';
 import AuthPage from './components/AuthPage';
 import Dashboard from "./components/Dashboard";
 import UserDashboard from "./components/UserDashboard";
 import ManageRequest from "./components/ManageReq";
 import MainNav from './components/MainNav';
 import AboutPage from './components/AboutPage';
+import ToolManagement from './components/ToolManagement';
+import UnsterilizedPackages from './components/UnsterilizedPackages'
+import ProtectedRoute from './components/ProtectedRoute';
+
 
 
 function App() {
@@ -20,13 +22,24 @@ function App() {
 
         <div className="mt-5">
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/ManageRequest" element={<ManageRequest />} />
-            <Route path="/dashboard/:userType/:username" element={<Dashboard />} />
-            <Route path="/user-dashboard/:userType/:username" element={<UserDashboard />} />
+            
+            <Route element={<ProtectedRoute />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/user-dashboard" element={<UserDashboard />} />
+              <Route path="/tool-management" element={<ToolManagement />} />
+              <Route path="/unsterilized-packages" element={<UnsterilizedPackages />} />
+              <Route path="/unsterilized-packages" element={<UnsterilizedPackages />} />
+            </Route>
+
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/user-dashboard" element={<UserDashboard />} />
+            <Route path="/tool-management" element={<ToolManagement />} />
+            <Route path="/unsterilized-packages" element={<UnsterilizedPackages />} />
+            <Route path="/unsterilized-packages" element={<UnsterilizedPackages />} />
+
           </Routes>
         </div>
       </div>
