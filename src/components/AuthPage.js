@@ -56,7 +56,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, ToggleButtonGroup, ToggleButton, Spinner, Alert, Nav } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 
 
 function AuthPage() {
