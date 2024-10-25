@@ -115,7 +115,7 @@ function AuthPage() {
     const endpoint = isLogin ? 'login' : 'register';
     const saltRounds = 10;
     // formData.password = bcrypt.hash(formData.password, saltRounds)
-    axios.post(`http://localhost:3001/${endpoint}`, formData)
+    axios.post(`https://steri-fast-backend.onrender.com/${endpoint}`, formData)
       .then(response => {
 
         if(formData.userType === "regular"){
