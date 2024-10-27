@@ -1,15 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { Button, Card, Modal, Table, Form } from 'react-bootstrap';
 import Breadcrumbs from './Breadcrumbs';
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
+import { IoTrashBinSharp } from "react-icons/io5";
+import { FaEdit } from "react-icons/fa";
+import axios from 'axios';
+import {  ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const ToolManagement = () => {
 
+  // toast.configure();
 
   const location = useLocation();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);  // Loading spinner state
+  const [loadingToolId, setLoadingToolId] = useState(null); 
+
+  const [showModal, setShowModal] = useState(false);
+  const [editMode, setEditMode] = useState(null);
+
+  const [newTool, setNewTool] = useState({
+    name: '',
+    quantity: 0,
+    damaged: 0,
+    serialNumber: '',
+    modificationDate: ''
+  });
+
 
   const handleNavClick = (path) => {
     navigate(path);
@@ -27,37 +46,68 @@ const ToolManagement = () => {
     { id: 3, name: 'Suture Kit', quantity: 20, damaged: 1 },
   ]);
 
-  const [showModal, setShowModal] = useState(false);
-  const [newTool, setNewTool] = useState({ name: '', quantity: 0 });
-  const [editMode, setEditMode] = useState(null);
-
   const totalTools = tools.reduce((acc, tool) => acc + tool.quantity, 0);
   const totalDamaged = tools.reduce((acc, tool) => acc + tool.damaged, 0);
   const totalInStore = totalTools - totalDamaged;
 
-  // Handle tool addition or editing
-  const handleSaveTool = () => {
-    if (editMode !== null) {
-      setTools((prev) =>
-        prev.map((tool) =>
-          tool.id === editMode ? { ...tool, ...newTool } : tool
-        )
-      );
-    } else {
-      setTools((prev) => [
-        ...prev,
-        { id: tools.length + 1, ...newTool, damaged: 0 },
-      ]);
+  // Fetch tools when the component mounts
+  const fetchTools = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/tools');
+      setTools(response.data);
+    } catch (error) {
+      console.error('Error fetching tools:', error);
     }
-
-    setNewTool({ name: '', quantity: 0 });
-    setShowModal(false);
-    setEditMode(null);
   };
 
+  useEffect(() => {
+    fetchTools();
+  }, []);
+
+  const generateSerialNumber = () => `TOOL-${Date.now()}`;
+
+  const handleSaveTool = async () => {
+    setIsLoading(true);  // Start spinner
+    const toolData = {
+      ...newTool,
+      serialNumber: newTool.serialNumber || generateSerialNumber(),
+      modificationDate: new Date().toISOString(),
+    };
+    
+    try {
+      let response;
+      if (editMode !== null) {
+        response = await axios.put(`http://localhost:3001/add-tools/${editMode}`, toolData);
+        setTools((prev) => prev.map((tool) => (tool.id === editMode ? { ...tool, ...toolData } : tool)));
+      } else {
+        response = await axios.post('http://localhost:3001/add-tools/', toolData);
+        setTools((prev) => [...prev, response.data]);
+      }
+      toast.success('Tool saved successfully!');  // Show success toast
+      fetchTools();
+      setNewTool({ name: '', quantity: 0, damaged: 0 });
+      setShowModal(false);
+    } catch (error) {
+      toast.error('Failed to save tool.');  // Show failure toast
+      console.error('Error saving tool:', error);
+    } finally {
+      setIsLoading(false);  // End spinner
+    }
+  };
+  
+
   // Handle delete tool
-  const handleDeleteTool = (id) => {
-    setTools((prev) => prev.filter((tool) => tool.id !== id));
+  const handleDeleteTool = async (id) => {
+    try {
+      await axios.post(`http://localhost:3001/delete-tool/`, {_id : id});
+      setTools(prevTools => prevTools.filter(tool => tool._id !== id));
+      toast.success('Tool deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting tool:', error);
+      toast.error('Failed to delete tool.');
+    } finally {
+      setLoadingToolId(null); // Reset loading state
+    }
   };
 
   // Open edit modal with existing tool data
@@ -70,21 +120,19 @@ const ToolManagement = () => {
   return (
     <div className="container mt-5">
 
-      <Breadcrumbs items={breadcrumbItems} />
-
       <h2>Inventory Management</h2>
 
       {/* Cards for Tool Statistics */}
       <div className="row my-4">
-        <div className="col-md-4">
-          <Card className="text-center m-2">
+        <div className="col-md-3">
+          <Card className="text-center m-1">
             <Card.Body>
               <Card.Title>Total Tools</Card.Title>
               <Card.Text>{totalTools}</Card.Text>
             </Card.Body>
           </Card>
         </div>
-        <div className="col-md-4 m-2">
+        <div className="col-md-3 m-1">
           <Card className="text-center bg-danger text-white">
             <Card.Body>
               <Card.Title>Damaged Tools</Card.Title>
@@ -92,7 +140,7 @@ const ToolManagement = () => {
             </Card.Body>
           </Card>
         </div>
-        <div className="col-md-4 m-2">
+        <div className="col-md-3 m-1">
           <Card className="text-center bg-success text-white">
             <Card.Body>
               <Card.Title>In Store</Card.Title>
@@ -111,7 +159,7 @@ const ToolManagement = () => {
       <Table striped bordered hover className="mt-4">
         <thead>
           <tr>
-            <th>#</th>
+            <th>Equipment ID</th>
             <th>Tool Name</th>
             <th>Quantity</th>
             <th>Damaged</th>
@@ -121,7 +169,7 @@ const ToolManagement = () => {
         <tbody>
           {tools.map((tool, index) => (
             <tr key={tool.id}>
-              <td>{index + 1}</td>
+              <td>{tool.serialNumber}</td>
               <td>{tool.name}</td>
               <td>{tool.quantity}</td>
               <td>{tool.damaged}</td>
@@ -134,12 +182,16 @@ const ToolManagement = () => {
                 >
                   Edit
                 </Button>
+                {/* <FaEdit  onClick={() => handleEditTool(tool)} /> */}
+                {/* <IoTrashBinSharp  /> */}
                 <Button
                   variant="danger"
                   size="sm"
-                  onClick={() => handleDeleteTool(tool.id)}
+                  onClick={() => handleDeleteTool(tool._id)}
+                  disabled={loadingToolId === tool._id}
                 >
-                  Delete
+                  {loadingToolId === tool._id ? 'Deleting...' : 'Delete'}
+
                 </Button>
               </td>
             </tr>
@@ -148,6 +200,7 @@ const ToolManagement = () => {
       </Table>
 
       {/* Modal for Adding/Editing Tools */}
+
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>{editMode ? 'Edit Tool' : 'Add New Tool'}</Modal.Title>
@@ -177,17 +230,31 @@ const ToolManagement = () => {
                 }
               />
             </Form.Group>
+
+            <Form.Group controlId="toolDamage" className="mt-3">
+              <Form.Label>Damaged</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter number of damaged tools"
+                value={newTool.damaged}
+                onChange={(e) =>
+                  setNewTool({ ...newTool, damaged: parseInt(e.target.value) })
+                }
+              />
+            </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSaveTool}>
-            Save Tool
+          <Button variant="primary" onClick={handleSaveTool} disabled={isLoading}>
+            {isLoading ? 'Saving...' : 'Save Tool'}
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <ToastContainer />
     </div>
   );
 };
