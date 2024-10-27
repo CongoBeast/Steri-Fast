@@ -1,7 +1,11 @@
 import React from 'react';
 import { Table, Button } from 'react-bootstrap';
 
-const PackageRequestTable = () => {
+const PackageRequestTable = (packages) => {
+
+  console.log(packages.packages)
+  // const newPackages = packages
+
   const packageRequests = [
     {
       id: 'PKG12345',
@@ -35,9 +39,8 @@ const PackageRequestTable = () => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
-            <th>#</th>
-            <th>Requester Name</th>
             <th>Package ID</th>
+            <th>Requester Name</th>
             <th>Surgical Tools</th>
             <th>Status</th>
             <th>Room</th>
@@ -46,15 +49,14 @@ const PackageRequestTable = () => {
           </tr>
         </thead>
         <tbody>
-          {packageRequests.map((pkg, index) => (
+          {packages.packages.map((pkg, index) => (
             <tr key={pkg.id}>
-              <td>{index + 1}</td>
-              <td>{pkg.requester}</td>
-              <td>{pkg.id}</td>
-              <td>{pkg.tools.join(', ')}</td>
-              <td>{pkg.status}</td>
-              <td>{pkg.room}</td>
-              <td>{new Date(pkg.timestamp).toLocaleString()}</td>
+              <td>{pkg.packageId}</td>
+              <td>{pkg.requesterName}</td>
+              <td>{pkg.selectedTools.join(', ')}</td>
+              <td>{pkg.requestStatus}</td>
+              <td>{pkg.roomNumber}</td>
+              <td>{new Date(pkg.requestDate).toLocaleString()}</td>
               <td>
                 <Button variant="primary" size="sm" className="me-2">
                   View
