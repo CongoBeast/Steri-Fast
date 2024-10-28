@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from 'react';
-import { Button, Card, Modal, Table, Form } from 'react-bootstrap';
+import { Button, Card, Modal, Table, Form, Breadcrumb, Badge } from 'react-bootstrap';
 import Breadcrumbs from './Breadcrumbs';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoTrashBinSharp } from "react-icons/io5";
@@ -117,22 +117,38 @@ const ToolManagement = () => {
     setShowModal(true);
   };
 
+  if((localStorage.getItem("userType")) === "regular"){
+    var dashboardLink = '/user-dashboard'
+  }
+  else{
+    var dashboardLink = '/dashboard'
+  }
+
   return (
     <div className="container mt-5">
+
+        <Breadcrumb className='p-3 rounded'> 
+            <Breadcrumb.Item linkAs={Link} linkProps={{ to: dashboardLink }}>
+            <Badge bg="primary">Home</Badge>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item active>
+            <Badge bg="success">Manage Inventory</Badge>
+            </Breadcrumb.Item>
+        </Breadcrumb>
 
       <h2>Inventory Management</h2>
 
       {/* Cards for Tool Statistics */}
       <div className="row my-4">
-        <div className="col-md-3">
+        <div className="col-md-2">
           <Card className="text-center m-1">
             <Card.Body>
-              <Card.Title>Total Tools</Card.Title>
-              <Card.Text>{totalTools}</Card.Text>
+              <Card.Title>{totalTools}</Card.Title>
+              <Card.Text>Total Tools</Card.Text>
             </Card.Body>
           </Card>
         </div>
-        <div className="col-md-3 m-1">
+        <div className="col-md-2 m-1">
           <Card className="text-center bg-danger text-white">
             <Card.Body>
               <Card.Title>Damaged Tools</Card.Title>
@@ -140,7 +156,7 @@ const ToolManagement = () => {
             </Card.Body>
           </Card>
         </div>
-        <div className="col-md-3 m-1">
+        <div className="col-md-2 m-1">
           <Card className="text-center bg-success text-white">
             <Card.Body>
               <Card.Title>In Store</Card.Title>

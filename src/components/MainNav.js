@@ -38,6 +38,14 @@ function MainNav() {
     // toggleSidebar(); // Close the sidebar after logout
   };
 
+  if((localStorage.getItem("userType")) === "regular"){
+    var dashboardLink = '/user-dashboard'
+  }
+  else{
+    var dashboardLink = '/dashboard'
+  }
+       
+
   return (
     <>
       <br />
@@ -55,7 +63,7 @@ function MainNav() {
 
           {/* Nav items on the left */}
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link onClick={() => handleNavClick(dashboardLink)}>Home</Nav.Link>
             <Nav.Link onClick={() => handleNavClick('/about')}>About Us</Nav.Link>
             {!isLoggedIn && (
             <Nav.Link onClick={() => handleNavClick('/auth')}>Login/Sign Up</Nav.Link>

@@ -1,7 +1,25 @@
 import React, { useState } from 'react';
-import { Table, Button, Form } from 'react-bootstrap';
+import { Table, Button, Form, Breadcrumb, Badge } from 'react-bootstrap';
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 
 const ManageRequest = () => {
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleNavClick = (path) => {
+    console.log(path)
+    // navigate(path);
+  };
+
+  if((localStorage.getItem("userType")) === "regular"){
+    var dashboardLink = '/user-dashboard'
+  }
+  else{
+    var dashboardLink = '/dashboard'
+  }
+
   const initialRequests = [
     {
       id: 'PKG12345',
@@ -55,8 +73,20 @@ const ManageRequest = () => {
     // You can implement a modal for editing or route to an edit page.
   };
 
+  console.log(localStorage.getItem("userType"))
+
   return (
     <div className="container">
+
+        <Breadcrumb className='p-3 rounded'>
+            <Breadcrumb.Item linkAs={Link} linkProps={{ to: dashboardLink }}>
+            <Badge bg="primary">Home</Badge>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item active>
+            <Badge bg="success">Manage Requests</Badge>
+            </Breadcrumb.Item>
+        </Breadcrumb>
+
       <h3 className="mb-4">Manage Package Requests</h3>
 
       {/* Search Bar */}

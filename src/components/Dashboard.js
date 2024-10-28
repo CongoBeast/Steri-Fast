@@ -30,12 +30,12 @@ const Dashboard = ({ userType, username }) => {
 
       <div className="row text-center">
         <div className="col-md-6 mb-3">
-          <button className="btn btn-primary w-100 py-3 btn-lg">
+          <button className="btn btn-primary w-100 py-3 btn-md" onClick={() => handleNavClick('/ManageRequest')}>
             Manage Requests
           </button>
         </div>
         <div className="col-md-6 mb-3">
-          <button className="btn btn-dark w-500 py-3 btn-lg">
+          <button className="btn btn-dark w-100 py-3 btn-md">
             Sterilized Packages
           </button>
         </div>
@@ -43,18 +43,18 @@ const Dashboard = ({ userType, username }) => {
 
       <div className="row text-center">
         <div className="col-md-6 mb-3">
-          <button className="btn btn-success w-100 py-3 btn-lg"  onClick={() => handleNavClick('/tool-management')}>
+          <button className="btn btn-success w-100 py-3 btn-md"  onClick={() => handleNavClick('/tool-management')}>
             Tool Management
           </button>
         </div>
         <div className="col-md-6 mb-3">
-          <button className="btn btn-warning w-100 py-3 btn-lg" onClick={() => handleNavClick("/unsterilized-packages")}>
+          <button className="btn btn-warning w-100 py-3 btn-md" onClick={() => handleNavClick("/unsterilized-packages")}>
             Unsterilized Packages
           </button>
         </div>
 
         <div className="col-md-6 mb-3">
-          <button className="btn btn-dark w-100 py-3 btn-lg" onClick={() => handleNavClick("/unsterilized-packages")}>
+          <button className="btn btn-dark w-100 py-3 btn-md" onClick={() => handleNavClick("/manage-users")}>
             Manage Users
           </button>
           
