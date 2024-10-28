@@ -5,10 +5,12 @@ import AuthPage from './components/AuthPage';
 import Dashboard from "./components/Dashboard";
 import UserDashboard from "./components/UserDashboard";
 import ManageRequest from "./components/ManageReq";
+import ManageAllRequest from "./components/ManageReqAll";
 import MainNav from './components/MainNav';
 import AboutPage from './components/AboutPage';
 import ToolManagement from './components/ToolManagement';
 import UserManagement from './components/UserManagement';
+import NotificationPage from './components/NotificationsPage';
 import UnsterilizedPackages from './components/UnsterilizedPackages'
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -34,13 +36,9 @@ function App() {
               <Route path="/unsterilized-packages" element={<UnsterilizedPackages />} />
               <Route path="/manage-users" element={<UserManagement />} />
               <Route path="/ManageRequest" element={<ManageRequest />} />
+              <Route path="/ManageRequestAll" element={<ManageAllRequest />} />
+              <Route path="/Notifications" element={<NotificationPage />} />
             </Route>
-
-            {/* <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/user-dashboard" element={<UserDashboard />} />
-            <Route path="/tool-management" element={<ToolManagement />} />
-            <Route path="/unsterilized-packages" element={<UnsterilizedPackages />} />
-            <Route path="/unsterilized-packages" element={<UnsterilizedPackages />} /> */}
 
           </Routes>
         </div>
