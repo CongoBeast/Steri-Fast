@@ -1,5 +1,7 @@
 import React from 'react';
 import { Table, Button } from 'react-bootstrap';
+import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
+
 
 const PackageRequestTable = (packages) => {
 
@@ -58,15 +60,12 @@ const PackageRequestTable = (packages) => {
               <td>{pkg.roomNumber}</td>
               <td>{new Date(pkg.requestDate).toLocaleString()}</td>
               <td>
-                <Button variant="primary" size="sm" className="me-2">
-                  View
-                </Button>
-                <Button variant="warning" size="sm" className="me-2">
-                  Edit
-                </Button>
-                <Button variant="danger" size="sm">
-                  Delete
-                </Button>
+                
+                <FaEye />
+
+                <FaEdit />
+
+                <FaTrash className='btn-warning'/>
               </td>
             </tr>
           ))}

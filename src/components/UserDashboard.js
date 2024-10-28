@@ -93,6 +93,17 @@ const UserDashboard = ({ userType, username }) => {
       setCriticalCode("");
       setRequesterName("");
       setDeliveryDate("");
+
+       // Create notification data
+      const notificationData = {
+      message: `Created package request ${packageId}`,
+      timestamp: new Date().toISOString(),
+      status: requestStatus,
+      requesterName,
+    };
+
+    // Send notification creation request
+    await axios.post('http://localhost:3001/create-notification', notificationData);
   
       setShowModal(false);  // Close the modal
       fetchPackageRequests()
@@ -217,6 +228,10 @@ const UserDashboard = ({ userType, username }) => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+
+
+
 
       {/* Success/Failure Toast */}
       <ToastContainer position="top-end" className="p-3">

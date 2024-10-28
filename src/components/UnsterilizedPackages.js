@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Table, Modal, Form } from 'react-bootstrap';
+import { Button, Table, Modal, Form, Breadcrumb, Badge } from 'react-bootstrap';
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 
 const UnsterilizedPackages = ({ username }) => {
   const [packages, setPackages] = useState([
@@ -46,8 +48,26 @@ const UnsterilizedPackages = ({ username }) => {
     setShowModal(false);
   };
 
+  if((localStorage.getItem("userType")) === "regular"){
+    var dashboardLink = '/user-dashboard'
+  }
+  else{
+    var dashboardLink = '/dashboard'
+  }
+
   return (
     <div className="container mt-5">
+
+        <Breadcrumb className='p-3 rounded'> 
+            <Breadcrumb.Item linkAs={Link} linkProps={{ to: dashboardLink }}>
+            <Badge bg="primary">Home</Badge>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item active>
+            <Badge bg="success">Manage Packages</Badge>
+            </Breadcrumb.Item>
+        </Breadcrumb>
+
+
       <h2>Manage Unsterilized Packages</h2>
 
       {/* Table displaying the unsterilized packages */}

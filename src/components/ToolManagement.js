@@ -3,10 +3,10 @@ import { Button, Card, Modal, Table, Form, Breadcrumb, Badge } from 'react-boots
 import Breadcrumbs from './Breadcrumbs';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoTrashBinSharp } from "react-icons/io5";
-import { FaEdit } from "react-icons/fa";
 import axios from 'axios';
 import {  ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 
 
 const ToolManagement = () => {
@@ -143,7 +143,7 @@ const ToolManagement = () => {
         <div className="col-md-2">
           <Card className="text-center m-1">
             <Card.Body>
-              <Card.Title>{totalTools}</Card.Title>
+              <Card.Title className='h1'>{totalTools}</Card.Title>
               <Card.Text>Total Tools</Card.Text>
             </Card.Body>
           </Card>

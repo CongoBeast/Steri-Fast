@@ -30,13 +30,13 @@ const Dashboard = ({ userType, username }) => {
 
       <div className="row text-center">
         <div className="col-md-6 mb-3">
-          <button className="btn btn-primary w-100 py-3 btn-md" onClick={() => handleNavClick('/ManageRequest')}>
+          <button className="btn btn-primary w-100 py-3 btn-md" onClick={() => handleNavClick('/ManageRequestAll')}>
             Manage Requests
           </button>
         </div>
         <div className="col-md-6 mb-3">
-          <button className="btn btn-dark w-100 py-3 btn-md">
-            Sterilized Packages
+          <button className="btn btn-warning w-100 py-3 btn-md" onClick={() => handleNavClick("/unsterilized-packages")}>
+            Manage Packages
           </button>
         </div>
       </div>
@@ -45,11 +45,6 @@ const Dashboard = ({ userType, username }) => {
         <div className="col-md-6 mb-3">
           <button className="btn btn-success w-100 py-3 btn-md"  onClick={() => handleNavClick('/tool-management')}>
             Tool Management
-          </button>
-        </div>
-        <div className="col-md-6 mb-3">
-          <button className="btn btn-warning w-100 py-3 btn-md" onClick={() => handleNavClick("/unsterilized-packages")}>
-            Unsterilized Packages
           </button>
         </div>
 

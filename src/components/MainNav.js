@@ -68,6 +68,10 @@ function MainNav() {
             {!isLoggedIn && (
             <Nav.Link onClick={() => handleNavClick('/auth')}>Login/Sign Up</Nav.Link>
             )}
+
+            {isLoggedIn && (
+            <Nav.Link onClick={() => handleNavClick('/Notifications')}>Notifications</Nav.Link>
+            )}
           </Nav>
 
           {/* Logout section at the end */}
