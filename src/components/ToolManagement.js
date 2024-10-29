@@ -83,6 +83,18 @@ const ToolManagement = () => {
         response = await axios.post('http://localhost:3001/add-tools/', toolData);
         setTools((prev) => [...prev, response.data]);
       }
+
+       // Create notification data
+       const notificationData = {
+        message: `${localStorage.getItem('user')} added tool with Seriel Number: ${serialNumber}`,
+        timestamp: new Date().toISOString(),
+        status: requestStatus,
+        requesterName,
+      };
+  
+      // Send notification creation request
+      await axios.post('http://localhost:3001/create-notification', notificationData);
+
       toast.success('Tool saved successfully!');  // Show success toast
       fetchTools();
       setNewTool({ name: '', quantity: 0, damaged: 0 });

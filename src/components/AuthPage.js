@@ -56,7 +56,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, ToggleButtonGroup, ToggleButton, Spinner, Alert, Nav } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-// const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 
 
 function AuthPage() {
@@ -115,7 +115,7 @@ function AuthPage() {
     const endpoint = isLogin ? 'login' : 'register';
     const saltRounds = 10;
     // formData.password = bcrypt.hash(formData.password, saltRounds)
-    axios.post(`https://steri-fast-backend.onrender.com/${endpoint}`, formData)
+    axios.post(`http://localhost:3001/${endpoint}`, formData)
       .then(response => {
 
         if(formData.userType === "regular"){
@@ -125,7 +125,26 @@ function AuthPage() {
           navString = "/dashboard"
         }
 
-        console.log(formData)
+        if(isLogin){
+          var message = `${formData.username} login successful`
+          
+        }
+        else{
+          var message = `${formData.username} sign up successful`
+        }
+
+
+        // console.log(formData)
+        // Create notification data
+      const notificationData = {
+        message: message,
+        timestamp: new Date().toISOString()
+        // status: requestStatus,
+        // requesterName,
+      };
+  
+      // Send notification creation request
+      axios.post('http://localhost:3001/create-notification', notificationData);
 
         setLoading(false);
         if (response.data.token) {
