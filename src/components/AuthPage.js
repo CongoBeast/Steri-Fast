@@ -102,6 +102,10 @@ function AuthPage() {
     return true;
   };
 
+  const generateUserId = () => {
+    return Math.random().toString(36).substring(2, 10);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -114,11 +118,17 @@ function AuthPage() {
     setLoading(true);
     const endpoint = isLogin ? 'login' : 'register';
     const saltRounds = 10;
+
+    const updatedFormData = {
+      ...formData,
+      userId: isLogin ? formData.userId : generateUserId(),
+    };
+  
     // formData.password = bcrypt.hash(formData.password, saltRounds)
-    axios.post(`http://localhost:3001/${endpoint}`, formData)
+    axios.post(`http://localhost:3001/${endpoint}`, updatedFormData)
       .then(response => {
 
-        if(formData.userType === "regular"){
+        if(updatedFormData.userType === "regular"){
           navString = "/user-dashboard"
         }
         else{
@@ -126,11 +136,11 @@ function AuthPage() {
         }
 
         if(isLogin){
-          var message = `${formData.username} login successful`
+          var message = `${updatedFormData.username} login successful`
           
         }
         else{
-          var message = `${formData.username} sign up successful`
+          var message = `${updatedFormData.username} sign up successful`
         }
 
 
@@ -138,7 +148,9 @@ function AuthPage() {
         // Create notification data
       const notificationData = {
         message: message,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        userId: updatedFormData.userId,
+        isRead: false
         // status: requestStatus,
         // requesterName,
       };
@@ -150,7 +162,11 @@ function AuthPage() {
         if (response.data.token) {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('user', formData.username);
+          // localStorage.setItem('user', formData.username);
           localStorage.setItem('userType', formData.userType);
+
+          if (!isLogin) { localStorage.setItem('userId', updatedFormData.userId); }
+
           navigate(navString);
         } else {
           setMessage('Operation successful');

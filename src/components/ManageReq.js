@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Button, Form, Breadcrumb, Badge } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 
 const ManageRequest = () => {
@@ -12,6 +13,22 @@ const ManageRequest = () => {
     console.log(path)
     // navigate(path);
   };
+
+  const [packageRequests, setPackageRequests] = useState([]);
+
+  const fetchPackageRequests = async () => {
+    try {
+      // const response = await axios.get(`https://steri-fast-backend.onrender.com/user-requests/${localStorage.getItem('user')}`);
+      const response = await axios.get(`http://localhost:3001/user-requests/${localStorage.getItem('user')}`);
+      // const response = await axios.get('http://localhost:3001/requests');
+      
+      setPackageRequests(response.data); // Set the data to state
+      // console.log(response.data)
+    } catch (error) {
+      console.error('Error fetching package requests:', error);
+    }
+  };
+
 
   if((localStorage.getItem("userType")) === "regular"){
     var dashboardLink = '/user-dashboard'
@@ -55,10 +72,10 @@ const ManageRequest = () => {
     setSearchTerm(e.target.value);
   };
 
-  const filteredRequests = requests.filter(
+  const filteredRequests = packageRequests.filter(
     (pkg) =>
-      pkg.requester.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      pkg.id.toLowerCase().includes(searchTerm.toLowerCase())
+      pkg.requesterName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pkg.packageId.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Handle delete functionality
@@ -74,6 +91,10 @@ const ManageRequest = () => {
   };
 
   console.log(localStorage.getItem("userType"))
+
+  useEffect(() => {
+    fetchPackageRequests();
+  }, []);
 
   return (
     <div className="container">
@@ -120,12 +141,12 @@ const ManageRequest = () => {
             filteredRequests.map((pkg, index) => (
               <tr key={pkg.id}>
                 <td>{index + 1}</td>
-                <td>{pkg.requester}</td>
-                <td>{pkg.id}</td>
-                <td>{pkg.tools.join(', ')}</td>
-                <td>{pkg.status}</td>
-                <td>{pkg.room}</td>
-                <td>{new Date(pkg.timestamp).toLocaleString()}</td>
+                <td>{pkg.requesterName}</td>
+                <td>{pkg.packageId}</td>
+                <td>{pkg.selectedTools.join(', ')}</td>
+                <td>{pkg.requestStatus}</td>
+                <td>{pkg.roomNumber}</td>
+                <td>{new Date(pkg.requestDate).toLocaleString()}</td>
                 <td>
                   <Button
                     variant="warning"

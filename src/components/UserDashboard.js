@@ -100,6 +100,7 @@ const UserDashboard = ({ userType, username }) => {
       timestamp: new Date().toISOString(),
       status: requestStatus,
       requesterName,
+      userId: localStorage.getItem('userId')
     };
 
     // Send notification creation request

@@ -86,10 +86,12 @@ const ToolManagement = () => {
 
        // Create notification data
        const notificationData = {
-        message: `${localStorage.getItem('user')} added tool with Seriel Number: ${serialNumber}`,
+        message: `${localStorage.getItem('user')} added tool with Seriel Number: ${newTool.serialNumber}`,
         timestamp: new Date().toISOString(),
-        status: requestStatus,
-        requesterName,
+        isRead: false,
+        userId: localStorage.getItem('userId')
+        // status: requestStatus,
+        // requesterName,
       };
   
       // Send notification creation request

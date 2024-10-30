@@ -20,6 +20,7 @@ const ManageRequest = () => {
 
     // Function to handle opening the modal
   const handleEdit = (pkg) => {
+      // console.log(pkg)
       setEditingPackage(pkg);
       setNewStatus(pkg.requestStatus || '');  // Set initial value
       setNewCriticalCode(pkg.criticalCode || '');  // Set initial value
@@ -38,7 +39,7 @@ const ManageRequest = () => {
         // const response = await axios.get('http://localhost:3001/requests');
         
         setPackageRequests(response.data); // Set the data to state
-        console.log(response.data)
+        // console.log(response.data)
       } catch (error) {
         console.error('Error fetching package requests:', error);
       }
@@ -54,11 +55,26 @@ const ManageRequest = () => {
         lastModified: new Date().toISOString(),
         receiver: localStorage.getItem("userType"),  // Get the name of editing user
       };
+
+      console.log(updatedData)
   
       try {
-        // await axios.put(`http://localhost:3001/requests/${editingPackage._id}`, updatedData);
-        await axios.put(`https://steri-fast-backend.onrender.com/requests/${editingPackage._id}`, updatedData);
+        await axios.put(`http://localhost:3001/requests/${editingPackage._id}`, updatedData);
+        // await axios.put(`https://steri-fast-backend.onrender.com/requests/${editingPackage._id}`, updatedData);
 
+
+        // Create notification data
+       const notificationData = {
+        message: `${localStorage.getItem('user')} updated a request for request: ${editingPackage.packageId}`,
+        timestamp: new Date().toISOString(),
+        isRead: false,
+        userId: localStorage.getItem('userId')
+        // status: requestStatus,
+        // requesterName,
+      };
+  
+      // Send notification creation request
+      await axios.post('http://localhost:3001/create-notification', notificationData);
         
         
         // Update local state after successful edit
@@ -134,7 +150,7 @@ const ManageRequest = () => {
       pkg.packageId.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  console.log(packageRequests)
+  // console.log(packageRequests)
 
   // Handle delete functionality
   const handleDelete = (_id) => {
@@ -143,7 +159,7 @@ const ManageRequest = () => {
   };
 
 
-  console.log(localStorage.getItem("userType"))
+  // console.log(localStorage.getItem("userType"))
 
   return (
     <div className="container">
@@ -178,6 +194,7 @@ const ManageRequest = () => {
             <th>#</th>
             <th>Requester Name</th>
             <th>Package ID</th>
+            <th>Critical Code</th>
             <th>Surgical Tools</th>
             <th>Status</th>
             <th>Room</th>
@@ -192,6 +209,7 @@ const ManageRequest = () => {
                 <td>{index + 1}</td>
                 <td>{pkg.requesterName}</td>
                 <td>{pkg.packageId}</td>
+                <td>{pkg.criticalCode}</td>
                 <td>{pkg.selectedTools.join(', ')}</td>
                 <td>{pkg.requestStatus}</td>
                 <td>{pkg.roomNumber}</td>
@@ -201,7 +219,7 @@ const ManageRequest = () => {
                     variant="warning"
                     size="sm"
                     className="me-2"
-                    onClick={() => handleEdit(pkg._id)}
+                    onClick={() => handleEdit(pkg)}
                   >
                     <FaEdit/>
                   </Button>
@@ -232,22 +250,55 @@ const ManageRequest = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group controlId="editStatus">
+            {/* <Form.Group controlId="editStatus">
               <Form.Label>Package Status</Form.Label>
               <Form.Control
                 type="text"
                 value={newStatus}
                 onChange={(e) => setNewStatus(e.target.value)}
               />
+            </Form.Group> */}
+
+            <Form.Group className="mb-3" controlId="editStatus">
+              <Form.Label>Room Number</Form.Label>
+              <Form.Select
+                value={newStatus}
+                onChange={(e) => setNewStatus(e.target.value)}
+              >
+                <option>Update status</option>
+                <option value="Request Accepted">Request Accepted</option>
+                <option value="Processing">Processing</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Packing">Packing</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Recieved">Recieved</option>
+              </Form.Select>
             </Form.Group>
-            <Form.Group controlId="editCriticalCode" className="mt-3">
+
+
+            {/* <Form.Group controlId="editCriticalCode" className="mt-3">
               <Form.Label>Critical Code</Form.Label>
               <Form.Control
                 type="text"
                 value={newCriticalCode}
                 onChange={(e) => setNewCriticalCode(e.target.value)}
               />
+            </Form.Group> */}
+            
+            <Form.Group className="mb-3" controlId="editCriticalCode">
+              <Form.Label>Critical Code</Form.Label>
+              <Form.Select
+                value={newCriticalCode}
+                onChange={(e) => setNewCriticalCode(e.target.value)}
+              >
+                <option>Select Critical Code</option>
+                <option value="1">Code 1 (Non-Critical)</option>
+                <option value="2">Code 2 (Moderate)</option>
+                <option value="3">Code 3 (Critical)</option>
+              </Form.Select>
             </Form.Group>
+
+
           </Form>
         </Modal.Body>
         <Modal.Footer>

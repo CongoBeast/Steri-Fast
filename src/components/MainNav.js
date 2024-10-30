@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 
 function MainNav() {
@@ -30,8 +31,23 @@ function MainNav() {
 
   const handleLogout = () => {
     // Remove token from local storage and update state
+    // Create notification data
+    const notificationData = {
+      message: `${localStorage.getItem('user')} logged out`,
+      timestamp: new Date().toISOString(),
+      isRead: false,
+      userId: localStorage.getItem('userId')
+      // status: requestStatus,
+      // requesterName,
+    };
+
+    // Send notification creation request
+    axios.post('http://localhost:3001/create-notification', notificationData);
+
+
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('userId');
     localStorage.removeItem('userType');
     setIsLoggedIn(false);
     navigate('/auth'); // Redirect to home after logout
