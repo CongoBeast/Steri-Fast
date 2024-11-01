@@ -2,27 +2,38 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Breadcrumbs from './Breadcrumbs';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 
 
-const Dashboard = ({ userType, username }) => {
 
-  const location = useLocation();
+// const Dashboard = ({ userType, username }) => {
+
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   const handleNavClick = (path) => {
+//     navigate(path);
+//   };
+
+//   const breadcrumbItems = [
+//     { name: 'Home', link: '/', active: false },
+//     { name: 'Inventory', link: '/inventory', active: true },
+//   ];
+
+function Dashboard() {
+
   const navigate = useNavigate();
 
   const handleNavClick = (path) => {
     navigate(path);
   };
 
-  const breadcrumbItems = [
-    { name: 'Home', link: '/', active: false },
-    { name: 'Inventory', link: '/inventory', active: true },
-  ];
-
 
   return (
 
-    <div className="container vh-100 d-flex flex-column  align-items-center">
 
+    <div className="container vh-100 d-flex flex-column justify-content-center  align-items-center">
+    {/* // <div className="home-container"> */}
 
       <div className="text-center mb-5">
         <h1>Welcome {localStorage.getItem('user')}</h1>
@@ -58,6 +69,7 @@ const Dashboard = ({ userType, username }) => {
       </div>
 
     </div>
+
   );
 };
 

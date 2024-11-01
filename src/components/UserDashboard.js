@@ -138,7 +138,8 @@ const UserDashboard = ({ userType, username }) => {
   ];
 
   return (
-    <div className="container vh-100 d-flex flex-column align-items-center">
+    // <div className="container vh-100 d-flex flex-column align-items-center">
+    <div className="">
       <div className="text-center mb-5">
         <h1>Welcome {localStorage.getItem('user')}</h1>
       </div>

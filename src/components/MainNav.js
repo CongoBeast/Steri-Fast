@@ -66,18 +66,22 @@ function MainNav() {
 
   return (
     <>
-      <br />
-      <Navbar bg="light" data-bs-theme="light">
+
+      <Navbar bg="light" collapseOnSelect expand="md" data-bs-theme="light" className="d-lg-none">
         <Container>
           <Navbar.Brand href="#home">
             <img
               src="https://github.com/CongoBeast/Tech-News/blob/master/public/steri-logo.png?raw=true"
-              width="30"
-              height="30"
+              width="50"
+              height="50"
               className="d-inline-block align-top"
               alt="React Bootstrap logo"
             />
           </Navbar.Brand>
+
+
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav ">
 
           {/* Nav items on the left */}
           <Nav className="me-auto">
@@ -98,6 +102,8 @@ function MainNav() {
           <button className="btn btn-link text-decoration-none color-red" onClick={handleLogout}>Logout</button>
           </Nav>
           )}
+
+          </Navbar.Collapse>
 
         </Container>
       </Navbar>

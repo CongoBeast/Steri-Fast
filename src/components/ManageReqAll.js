@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Form, Breadcrumb, Badge, Modal } from 'react-bootstrap';
+import { Table, Button, Form, Breadcrumb, Badge, Modal , Container, Card } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
-
+import '../CustomTable.css';
 
 
 const ManageRequest = () => {
@@ -35,8 +35,8 @@ const ManageRequest = () => {
   
   const fetchPackageRequests = async () => {
       try {
-        const response = await axios.get('https://steri-fast-backend.onrender.com/requests');
-        // const response = await axios.get('http://localhost:3001/requests');
+        // const response = await axios.get('https://steri-fast-backend.onrender.com/requests');
+        const response = await axios.get('http://localhost:3001/requests');
         
         setPackageRequests(response.data); // Set the data to state
         // console.log(response.data)
@@ -59,8 +59,8 @@ const ManageRequest = () => {
       console.log(updatedData)
   
       try {
-        // await axios.put(`http://localhost:3001/requests/${editingPackage._id}`, updatedData);
-        await axios.put(`https://steri-fast-backend.onrender.com/${editingPackage._id}`, updatedData);
+        await axios.put(`http://localhost:3001/requests/${editingPackage._id}`, updatedData);
+        // await axios.put(`https://steri-fast-backend.onrender.com/${editingPackage._id}`, updatedData);
         // await axios.put(`https://steri-fast-backend.onrender.com/requests/${editingPackage._id}`, updatedData);
 
 
@@ -190,7 +190,8 @@ const ManageRequest = () => {
       </Form>
 
       {/* Package Requests Table */}
-      <Table striped bordered hover responsive>
+      
+      <Table className="custom-table" responsive>
         <thead>
           <tr>
             <th>#</th>
@@ -223,7 +224,7 @@ const ManageRequest = () => {
                     className="me-2"
                     onClick={() => handleEdit(pkg)}
                   >
-                    <FaEdit/>
+                    <FaEdit />
                   </Button>
                   <Button
                     variant="danger"
@@ -237,7 +238,7 @@ const ManageRequest = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="8" className="text-center">
+              <td colSpan="9" className="text-center">
                 No package requests found.
               </td>
             </tr>

@@ -134,7 +134,7 @@ function AuthPage() {
       localStorage.setItem('userType', response.data[0].userType);
       localStorage.setItem('userId', response.data[0].userId);
       localStorage.setItem('user', formData.username);
-      console.log("User document saved to localStorage:", response.data[0].userType);
+      console.log("User document saved to localStorage:", response.data[0].username);
     } catch (error) {
       console.error('Error fetching user document:', error);
     }
