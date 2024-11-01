@@ -42,7 +42,9 @@ function MainNav() {
     };
 
     // Send notification creation request
-    axios.post('http://localhost:3001/create-notification', notificationData);
+    axios.post('https://steri-fast-backend.onrender.com/create-notification', notificationData);
+    // axios.post('http://localhost:3001/create-notification', notificationData);
+    
 
 
     localStorage.removeItem('token');

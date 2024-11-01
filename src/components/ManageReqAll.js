@@ -59,7 +59,8 @@ const ManageRequest = () => {
       console.log(updatedData)
   
       try {
-        await axios.put(`http://localhost:3001/requests/${editingPackage._id}`, updatedData);
+        // await axios.put(`http://localhost:3001/requests/${editingPackage._id}`, updatedData);
+        await axios.put(`https://steri-fast-backend.onrender.com/${editingPackage._id}`, updatedData);
         // await axios.put(`https://steri-fast-backend.onrender.com/requests/${editingPackage._id}`, updatedData);
 
 
@@ -74,7 +75,8 @@ const ManageRequest = () => {
       };
   
       // Send notification creation request
-      await axios.post('http://localhost:3001/create-notification', notificationData);
+      await axios.post('https://steri-fast-backend.onrender.com//create-notification', notificationData);
+      // await axios.post('http://localhost:3001/create-notification', notificationData);
         
         
         // Update local state after successful edit

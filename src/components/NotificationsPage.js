@@ -34,7 +34,9 @@ const NotificationsPage = () => {
   const fetchNotifications = async () => {
     try {
       // const response = await axios.get('http://localhost:3001/notifications');
-      const response = await axios.get(`http://localhost:3001/notifications?userId=${localStorage.getItem('userId')}`);
+      
+      // const response = await axios.get(`http://localhost:3001/notifications?userId=${localStorage.getItem('userId')}`);
+      const response = await axios.get(`https://steri-fast-backend.onrender.com/notifications?userId=${localStorage.getItem('userId')}`);
       setNotifications(response.data);
       // console.log(response.data)
     } catch (error) {

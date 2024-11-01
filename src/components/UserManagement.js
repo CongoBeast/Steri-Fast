@@ -28,9 +28,11 @@ const UserManagement = () => {
     fetchUsers();
   }, []);
 
+
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/get-users');
+      const response = await axios.get('https://steri-fast-backend.onrender.com/get-users');
+      // const response = await axios.get('http://localhost:3001/get-users');
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -53,12 +55,14 @@ const UserManagement = () => {
     try {
       if (editUserId) {
         // Update user
-        await axios.put(`http://localhost:3001/edit-user/${editUserId}`, newUser);
+        await axios.put(`https://steri-fast-backend.onrender.com/edit-user/${editUserId}`, newUser);
+        // await axios.put(`http://localhost:3001/edit-user/${editUserId}`, newUser);
         setUsers((prev) => prev.map((user) => (user.id === editUserId ? { ...user, ...newUser } : user)));
         toast.success('User updated successfully!');
       } else {
         // Add new user
-        const response = await axios.post('http://localhost:3001/add-user', newUser);
+        const response = await axios.post('https://steri-fast-backend.onrender.com/add-user', newUser);
+        // const response = await axios.post('http://localhost:3001/add-user', newUser);
         setUsers((prev) => [...prev, response.data]);
         toast.success('User added successfully!');
       }
@@ -76,7 +80,8 @@ const UserManagement = () => {
   const handleDeleteUser = async (id) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
-        await axios.delete(`http://localhost:3001/delete-user/${id}`);
+        // await axios.delete(`http://localhost:3001/delete-user/${id}`);
+        await axios.delete(`https://steri-fast-backend.onrender.com/delete-user/${id}`);
         setUsers((prev) => prev.filter((user) => user.id !== id));
         toast.success('User deleted successfully!');
       } catch (error) {

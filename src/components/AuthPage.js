@@ -1,62 +1,8 @@
-// import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import 'bootstrap/dist/css/bootstrap.min.css';
 
-// const AuthPage = () => {
-//   const [isLogin, setIsLogin] = useState(true);
-//   const navigate = useNavigate();
-
-//   const handleAuth = () => {
-//     // Simulate successful login/signup logic
-//     const userType = "User Type A"; // You can change or dynamically set this based on login/signup logic
-//     const username = "JohnDoe";
-    
-//     // Navigate to the dashboard after login
-//     navigate(`/dashboard/${userType}/${username}`);
-//   };
-
-//   return (
-//     <div className="d-flex justify-content-center align-items-center vh-100">
-//       <div className="card p-4 shadow" style={{ maxWidth: "400px", width: "100%" }}>
-//         <div className="d-flex justify-content-around mb-4">
-//           <button
-//             className={`btn ${isLogin ? "btn-primary" : "btn-light"} w-50`}
-//             onClick={() => setIsLogin(true)}
-//           >
-//             Login
-//           </button>
-//           <button
-//             className={`btn ${!isLogin ? "btn-primary" : "btn-light"} w-50`}
-//             onClick={() => setIsLogin(false)}
-//           >
-//             Sign Up
-//           </button>
-//         </div>
-//         <div className="mb-3">
-//           <input type="text" className="form-control" placeholder="Enter Username" />
-//         </div>
-//         <div className="mb-3">
-//           <input type="password" className="form-control" placeholder="Enter Password" />
-//         </div>
-//         <button className="btn btn-primary w-100 mb-2" onClick={handleAuth}>
-//           {isLogin ? "Login" : "Sign Up"}
-//         </button>
-//         {isLogin && (
-//           <div className="text-center">
-//             <a href="/" className="text-decoration-none">Forgot Password?</a>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AuthPage;
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, ToggleButtonGroup, ToggleButton, Spinner, Alert, Nav } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-const bcrypt = require('bcryptjs');
 
 
 function AuthPage() {
@@ -66,7 +12,8 @@ function AuthPage() {
     password: '',
     email: '',
     confirmPassword: '',
-    userType: 'regular',
+    userType: '',
+    userId: '',
     userPosition: ''
   });
   const [loading, setLoading] = useState(false);
@@ -114,8 +61,6 @@ function AuthPage() {
       return;
     }
 
-
-
     setLoading(true);
     const endpoint = isLogin ? 'login' : 'register';
     const saltRounds = 10;
@@ -126,7 +71,7 @@ function AuthPage() {
     };
   
     // formData.password = bcrypt.hash(formData.password, saltRounds)
-    axios.post(`http://localhost:3001/${endpoint}`, updatedFormData)
+    axios.post(`https://steri-fast-backend.onrender.com/${endpoint}`, updatedFormData)
       .then(response => {
 
         if(updatedFormData.userType === "regular"){
@@ -138,6 +83,7 @@ function AuthPage() {
 
         if(isLogin){
           var message = `${updatedFormData.username} login successful`
+          getUserDocument(updatedFormData.username)
           
         }
         else{
@@ -157,17 +103,18 @@ function AuthPage() {
       };
   
       // Send notification creation request
-      axios.post('http://localhost:3001/create-notification', notificationData);
+      axios.post('https://steri-fast-backend.onrender.com/create-notification', notificationData);
+      // axios.post('http://localhost:3001/create-notification', notificationData);
 
         setLoading(false);
         if (response.data.token) {
           localStorage.setItem('token', response.data.token);
-          localStorage.setItem('user', formData.username);
           // localStorage.setItem('user', formData.username);
-          localStorage.setItem('userType', formData.userType);
 
           if (!isLogin) { localStorage.setItem('userId', updatedFormData.userId); }
 
+
+          console.log(localStorage.getItem('userType'))
           navigate(navString);
         } else {
           setMessage('Operation successful');
@@ -177,6 +124,20 @@ function AuthPage() {
         setLoading(false);
         setError(error.response ? error.response.data.message : 'An error occurred');
       });
+  };
+
+  const getUserDocument = async (username) => {
+    try {
+      const response = await axios.get(`https://steri-fast-backend.onrender.com/get-user-login?username=${username}`);
+      // const response = await axios.get(`http://localhost:3001/get-user-login?username=${username}`);
+      // localStorage.setItem('userDocument', JSON.stringify(response.data));  // Save user document in local storage
+      localStorage.setItem('userType', response.data[0].userType);
+      localStorage.setItem('userId', response.data[0].userId);
+      localStorage.setItem('user', formData.username);
+      console.log("User document saved to localStorage:", response.data[0].userType);
+    } catch (error) {
+      console.error('Error fetching user document:', error);
+    }
   };
 
 

@@ -53,7 +53,9 @@ const ToolManagement = () => {
   // Fetch tools when the component mounts
   const fetchTools = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/tools');
+      const response = await axios.get('https://steri-fast-backend.onrender.com/tools');
+      // const response = await axios.get('http://localhost:3001/tools');
+      
       setTools(response.data);
     } catch (error) {
       console.error('Error fetching tools:', error);
@@ -77,10 +79,12 @@ const ToolManagement = () => {
     try {
       let response;
       if (editMode !== null) {
-        response = await axios.put(`http://localhost:3001/add-tools/${editMode}`, toolData);
+        response = await axios.put(`https://steri-fast-backend.onrender.com/add-tools/${editMode}`, toolData);
+        // response = await axios.put(`http://localhost:3001/add-tools/${editMode}`, toolData);
         setTools((prev) => prev.map((tool) => (tool.id === editMode ? { ...tool, ...toolData } : tool)));
       } else {
-        response = await axios.post('http://localhost:3001/add-tools/', toolData);
+        response = await axios.post('https://steri-fast-backend.onrender.com/add-tools/', toolData);
+        // response = await axios.post('http://localhost:3001/add-tools/', toolData);
         setTools((prev) => [...prev, response.data]);
       }
 
@@ -95,7 +99,8 @@ const ToolManagement = () => {
       };
   
       // Send notification creation request
-      await axios.post('http://localhost:3001/create-notification', notificationData);
+      await axios.post('https://steri-fast-backend.onrender.com/create-notification', notificationData);
+      // await axios.post('http://localhost:3001/create-notification', notificationData);
 
       toast.success('Tool saved successfully!');  // Show success toast
       fetchTools();
@@ -113,7 +118,8 @@ const ToolManagement = () => {
   // Handle delete tool
   const handleDeleteTool = async (id) => {
     try {
-      await axios.post(`http://localhost:3001/delete-tool/`, {_id : id});
+      await axios.post(`https://steri-fast-backend.onrender.com/delete-tool/`, {_id : id});
+      // await axios.post(`http://localhost:3001/delete-tool/`, {_id : id});
       setTools(prevTools => prevTools.filter(tool => tool._id !== id));
       toast.success('Tool deleted successfully!');
     } catch (error) {

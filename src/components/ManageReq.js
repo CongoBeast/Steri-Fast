@@ -18,9 +18,9 @@ const ManageRequest = () => {
 
   const fetchPackageRequests = async () => {
     try {
-      // const response = await axios.get(`https://steri-fast-backend.onrender.com/user-requests/${localStorage.getItem('user')}`);
-      const response = await axios.get(`http://localhost:3001/user-requests/${localStorage.getItem('user')}`);
-      // const response = await axios.get('http://localhost:3001/requests');
+      const response = await axios.get(`https://steri-fast-backend.onrender.com/user-requests/${localStorage.getItem('user')}`);
+      // const response = await axios.get(`http://localhost:3001/user-requests/${localStorage.getItem('user')}`);
+
       
       setPackageRequests(response.data); // Set the data to state
       // console.log(response.data)

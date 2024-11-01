@@ -33,7 +33,8 @@ const UserDashboard = ({ userType, username }) => {
 
   const fetchPackageRequests = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/user-requests/${localStorage.getItem('user')}`);
+      const response = await axios.get(`https://steri-fast-backend.onrender.com/user-requests/${localStorage.getItem('user')}`);
+      // const response = await axios.get(`http://localhost:3001/user-requests/${localStorage.getItem('user')}`);
       setPackageRequests(response.data); // Set the data to state
       console.log(response.data)
     } catch (error) {
@@ -82,7 +83,8 @@ const UserDashboard = ({ userType, username }) => {
     };
   
     try {
-      const response = await axios.post('http://localhost:3001/create-request', packageData);
+      const response = await axios.post('https://steri-fast-backend.onrender.com/create-request', packageData);
+      // const response = await axios.post('http://localhost:3001/create-request', packageData);
       toast.success('Package created successfully!');  // Show success toast
   
       // Update the packages list and reset the form fields
@@ -104,7 +106,8 @@ const UserDashboard = ({ userType, username }) => {
     };
 
     // Send notification creation request
-    await axios.post('http://localhost:3001/create-notification', notificationData);
+    await axios.post('https://steri-fast-backend.onrender.com/create-notification', notificationData);
+    // await axios.post('http://localhost:3001/create-notification', notificationData);
   
       setShowModal(false);  // Close the modal
       fetchPackageRequests()

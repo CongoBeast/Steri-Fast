@@ -1,35 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { Button, Table, Modal, Form, Breadcrumb, Badge } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
+import axios from 'axios'
 
 const UnsterilizedPackages = ({ username }) => {
-  const [packages, setPackages] = useState([
-    {
-      id: 1,
-      packageNumber: 'PKG001',
-      room: 'Operating Room 1',
-      tools: ['Scalpel', 'Forceps', 'Syringe'],
-      damagedTools: ['Scalpel'],
-      timeReceived: '2024-10-25 09:30 AM',
-      receivedBy: 'N/A',
-      status: 'Pending',
-    },
-    {
-      id: 2,
-      packageNumber: 'PKG002',
-      room: 'Operating Room 2',
-      tools: ['Suture Kit', 'Scissors'],
-      damagedTools: [],
-      timeReceived: '2024-10-25 11:00 AM',
-      receivedBy: 'N/A',
-      status: 'Pending',
-    },
-  ]);
 
+  const [packages , setPackages] = useState([])
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [status, setStatus] = useState('');
+
+  const fetchPackages = async () => {
+    try {
+      // const response = await axios.get(`http://localhost:3001/unsterilized-packages`);
+      const response = await axios.get(`https://steri-fast-backend.onrender.com/unsterilized-packages`);
+
+      // const response = await axios.get('http://localhost:3001/requests');
+      
+      setPackages(response.data); // Set the data to state
+      // console.log(response.data)
+    } catch (error) {
+      console.error('Error fetching package requests:', error);
+    }
+  };
 
   const handleManageClick = (pkg) => {
     setSelectedPackage(pkg);
@@ -54,6 +47,11 @@ const UnsterilizedPackages = ({ username }) => {
   else{
     var dashboardLink = '/dashboard'
   }
+
+  useEffect(() => {
+    fetchPackages();
+  }, []);
+
 
   return (
     <div className="container mt-5">
@@ -87,15 +85,16 @@ const UnsterilizedPackages = ({ username }) => {
         </thead>
         <tbody>
           {packages.map((pkg, index) => (
-            <tr key={pkg.id}>
+            <tr key={pkg._id}>
               <td>{index + 1}</td>
-              <td>{pkg.packageNumber}</td>
+              <td>{pkg.packageId}</td>
               <td>{pkg.room}</td>
-              <td>{pkg.tools.join(', ')}</td>
+              <td>{pkg.surgicalTools.join(', ')}</td>
               <td>
-                {pkg.damagedTools.length > 0
+                {/* {pkg.damagedTools.length > 0
                   ? pkg.damagedTools.join(', ')
-                  : 'None'}
+                  : 'None'} */}
+                  Stuff
               </td>
               <td>{pkg.timeReceived}</td>
               <td>{pkg.receivedBy}</td>
