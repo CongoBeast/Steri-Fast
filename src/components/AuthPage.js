@@ -67,6 +67,7 @@ function AuthPage() {
     email: '',
     confirmPassword: '',
     userType: 'regular',
+    userPosition: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -222,6 +223,16 @@ function AuthPage() {
                   <Form.Control as="select" name="userType" value={formData.userType} onChange={handleChange}>
                     <option value="regular">Regular</option>
                     <option value="admin">Admin</option>
+                  </Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId="formUserPosition">
+                  <Form.Label>User Position</Form.Label>
+                  <Form.Control as="select" name="userPosition" value={formData.userPosition} onChange={handleChange}>
+                    <option value="surgeon">Surgeon</option>
+                    <option value="nurse">Nurse</option>
+                    <option value="assistant surgeon">Assistant Surgeon</option>
+                    <option value="admin supervisor">Admin Supervisor</option>
                   </Form.Control>
                 </Form.Group>
               </>

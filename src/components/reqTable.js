@@ -35,6 +35,10 @@ const PackageRequestTable = (packages) => {
     },
   ];
 
+  if(packages.packages.length > 0){
+    var checkPackages = false
+  }
+
   return (
     <div className="container">
       <h3 className="mb-4">Recent Package Requests</h3>
@@ -69,6 +73,15 @@ const PackageRequestTable = (packages) => {
               </td>
             </tr>
           ))}
+
+          { checkPackages && (
+          <tr>
+              <td colSpan="8" className="text-center">
+                No package requests found please create a request.
+              </td>
+            </tr>
+        )}
+            
         </tbody>
       </Table>
     </div>

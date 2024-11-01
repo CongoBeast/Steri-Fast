@@ -33,7 +33,7 @@ const UserDashboard = ({ userType, username }) => {
 
   const fetchPackageRequests = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/requests' , {requesterName});
+      const response = await axios.get(`http://localhost:3001/user-requests/${localStorage.getItem('user')}`);
       setPackageRequests(response.data); // Set the data to state
       console.log(response.data)
     } catch (error) {
@@ -121,7 +121,16 @@ const UserDashboard = ({ userType, username }) => {
   const toolOptions = [
     { value: 'scalpel', label: 'Scalpel' },
     { value: 'forceps', label: 'Forceps' },
-    { value: 'scissors', label: 'Scissors' },
+    { value: 'surgical scissors', label: 'Surgical Scissors' },
+    { value: 'retractors', label: 'Retractors' },
+    { value: 'splinter forceps', label: 'Splinter Forceps' },
+    { value: 'laryngoscopes', label: 'Laryngoscopes' },
+    { value: 'endotracheal tubes', label: 'Endotracheal Tubes' },
+    { value: 'ventilator components', label: 'Ventilator Components' },
+    { value: 'central line kits', label: 'Central Line Kits' },
+    { value: 'catheters', label: 'Catheters' },
+    { value: 'scalers', label: 'Scalers' },
+    { value: 'mirrors', label: 'Mirrors' },
     { value: 'suture', label: 'Suture Kit' }
   ];
 
@@ -142,12 +151,13 @@ const UserDashboard = ({ userType, username }) => {
             className="btn btn-dark w-100 py-3 btn-lg"
             onClick={handleOpenModal}
           >
-            Create Packages
+            Create My Requests
           </button>
         </div>
       </div>
 
       <h3 className="m-5">Recent Package Requests</h3>
+
       <PackageRequestTable packages={packageRequests}/>
 
       {/* Modal for Creating Package */}
@@ -161,15 +171,6 @@ const UserDashboard = ({ userType, username }) => {
               <Form.Label>Package ID</Form.Label>
               <Form.Control type="text" value={packageId} readOnly />
             </Form.Group>
-
-            {/* <Form.Group className="mb-3">
-              <Form.Label>Requester Name</Form.Label>
-              <Form.Control
-                type="text"
-                value={requesterName}
-                onChange={(e) => setRequesterName(e.target.value)}
-              />
-            </Form.Group> */}
 
             <Form.Group className="mb-3">
               <Form.Label>Select Surgical Tools</Form.Label>

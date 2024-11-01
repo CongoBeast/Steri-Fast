@@ -4,6 +4,8 @@ import { Table, Button, Modal, Form , Badge, Stack, Breadcrumb } from 'react-boo
 import { toast } from 'react-toastify';
 // import { useParams,  Link } from 'react-router-dom';
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
+
 
 
 
@@ -126,10 +128,10 @@ const UserManagement = () => {
               <td>{user.userType}</td>
               <td>
                 <Button variant="warning" size="sm" onClick={() => handleOpenModal(user)} className="me-2">
-                  Edit
+                  <FaEdit />
                 </Button>
-                <Button variant="danger" size="sm" onClick={() => handleDeleteUser(user.id)}>
-                  Delete
+                <Button variant="danger" size="sm" onClick={() => handleDeleteUser(user._id)}>
+                  <FaTrash />
                 </Button>
               </td>
             </tr>
