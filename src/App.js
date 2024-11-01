@@ -13,17 +13,19 @@ import UserManagement from './components/UserManagement';
 import NotificationPage from './components/NotificationsPage';
 import UnsterilizedPackages from './components/UnsterilizedPackages'
 import ProtectedRoute from './components/ProtectedRoute';
+import Sidebar from './components/Sidebar';
 
 
 
 function App() {
   return (
     <Router>
-      <div className="container">
+      <div className="d-flex">
 
-        <MainNav />
+        <Sidebar />
 
-        <div className="mt-5">
+        <div className="container-fluid">
+          <MainNav />
           <Routes>
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/about" element={<AboutPage />} />
